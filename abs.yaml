@@ -1,0 +1,5 @@
+upload_channels:
+  - sfe1ed40
+
+channels:
+- https://staging.continuum.io/prefect/fs/hydra-core-feedstock/pr2/bfd1856
