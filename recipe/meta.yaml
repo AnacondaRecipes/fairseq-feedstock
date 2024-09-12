@@ -1,13 +1,15 @@
-{% set version = "0.12.3" %}
-
+{% set name = "fairseq" %}
+{% set version = "0.12.2" %}
 
 package:
   name: fairseq
   version: {{ version }}
 
 source:
-  url: https://github.com/pytorch/fairseq/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: f9e97dc0ff6a9f5c4f29fcf297c2fa4d16a2ca7f6dbd180286855e31e1cb3183
+  #url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://github.com/facebookresearch/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
+  #sha256: 34f1b18426bf3844714534162f065ab733e049597476daa35fffb4d06a92b524
+  sha256: b5bb076f8b0d5b06a897b11627da278816752b2202650c34becd8f4240f86961
 
 build:
   number: 6
@@ -28,20 +30,16 @@ build:
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - cython                                 # [build_platform != target_platform]
-    - numpy                                  # [build_platform != target_platform]
-    - pytorch                                # [build_platform != target_platform]
     - {{ compiler('c') }}
-    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
   host:
+    - pybind11
     - python
     - pip
     - numpy
     - cython
     - setuptools
+    - wheel
     # It's required to build the CPP extensions.
     - pytorch
   run:
@@ -53,6 +51,7 @@ requirements:
     - sacrebleu >=1.4.12
     - tqdm
     - bitarray
+    - pytorch
 
 test:
   imports:
