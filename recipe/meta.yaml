@@ -69,8 +69,15 @@ test:
 about:
   home: https://github.com/pytorch/fairseq
   summary: Facebook AI Research Sequence-to-Sequence Toolkit
+  description: |
+    Fairseq(-py) is a sequence modeling toolkit that allows researchers and 
+    developers to train custom models for translation, summarization, language
+    modeling and other text generation tasks.
   license: MIT
   license_file: LICENSE
+  license_family: MIT
+  dev_url: https://github.com/facebookresearch/fairseq
+  doc_url: https://fairseq.readthedocs.io/
 
 extra:
   recipe-maintainers:
