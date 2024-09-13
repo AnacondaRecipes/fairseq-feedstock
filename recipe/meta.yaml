@@ -26,9 +26,8 @@ build:
   missing_dso_whitelist:
     - $RPATH/libtorch_cpu.so     # [linux]
     - $RPATH/libtorch_cpu.dylib  # [osx]
-    - $RPATH/libtorch_python.so
-    - $RPATH/libc10
-    - $RPATH/libc10.so
+    - $RPATH/libtorch_python.so  # [linux]
+    - $RPATH/libc10.so           # [linux]
   skip: true  # [win or s390x]
   # fairseq still does not support python 3.11
   # https://github.com/facebookresearch/fairseq/pull/5359/files
@@ -83,7 +82,7 @@ about:
   license_file: LICENSE
   license_family: MIT
   dev_url: https://github.com/facebookresearch/fairseq
-  doc_url: https://fairseq.readthedocs.io/
+  doc_url: https://fairseq.readthedocs.io/en/latest/
 
 extra:
   recipe-maintainers:
