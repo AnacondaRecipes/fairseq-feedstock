@@ -24,10 +24,12 @@ build:
     - fairseq-validate = fairseq_cli.validate:cli_main
   script: {{ PYTHON }} -m pip install . -vv --no-deps --ignore-installed
   missing_dso_whitelist:
-    - $RPATH/libtorch_cpu.so     # [linux]
-    - $RPATH/libtorch_cpu.dylib  # [osx]
-    - $RPATH/libtorch_python.so  # [linux]
-    - $RPATH/libc10.so           # [linux]
+    - $RPATH/libtorch_cpu.so         # [linux]
+    - $RPATH/libtorch_cpu.dylib      # [osx]
+    - $RPATH/libtorch_python.so      # [linux]
+    - $RPATH/libc10.so               # [linux]
+    - $RPATH/libtorch_python.dylib   # [osx]
+    - $RPATH/libc10.dylib            # [osx]
   skip: true  # [win or s390x]
   # fairseq still does not support python 3.11
   # https://github.com/facebookresearch/fairseq/pull/5359/files
