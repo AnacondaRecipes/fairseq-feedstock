@@ -22,7 +22,11 @@ build:
     - fairseq-score = fairseq_cli.score:cli_main
     - fairseq-train = fairseq_cli.train:cli_main
     - fairseq-validate = fairseq_cli.validate:cli_main
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script:
+    # compiling Cython token_block_utils_fast.pyx module so it can be imported
+    - {{ PYTHON }} setup.py build_ext --inplace
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+    # - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --global-option="build_ext" --global-option="--inplace"
   missing_dso_whitelist:
     - $RPATH/libtorch_cpu.so         # [linux]
     - $RPATH/libtorch_cpu.dylib      # [osx]
