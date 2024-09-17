@@ -60,6 +60,14 @@ requirements:
     - bitarray
     - pytorch
 
+{% set tests_to_skip = "" %}
+# missing CUDA error, but we don't need to build CUDA-compatible fairseq
+{% set tests_to_skip = tests_to_skip + "test_fp16_for_long_input" %}  # [pytorch_variant == "cpu"]
+# skipping because "soft_energy" KeyError that seems to be missing from a dict defined in files within examples/ directory 
+{% set tests_to_skip = tests_to_skip + "test_expected_attention" %}   # [pytorch_variant == "cpu"]
+# skipping these because we don't have xformers
+{% set tests_to_skip = tests_to_skip + "test_xformers_single_forward_parity" %}
+
 test:
   source_files:
     - tests
