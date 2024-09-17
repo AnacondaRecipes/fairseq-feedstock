@@ -22,7 +22,7 @@ build:
     - fairseq-score = fairseq_cli.score:cli_main
     - fairseq-train = fairseq_cli.train:cli_main
     - fairseq-validate = fairseq_cli.validate:cli_main
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --ignore-installed
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   missing_dso_whitelist:
     - $RPATH/libtorch_cpu.so         # [linux]
     - $RPATH/libtorch_cpu.dylib      # [osx]
@@ -51,7 +51,7 @@ requirements:
     - pytorch
   run:
     - python
-    - hydra-core >=1.0.7
+    - hydra-core >=1.0.7 
     - omegaconf
     - {{ pin_compatible('numpy') }}
     - regex
@@ -61,10 +61,22 @@ requirements:
     - pytorch
 
 test:
+  source_files:
+    - tests
+    - examples
+    - scripts
+    - fairseq
+    #- fairseq/data/data_utils_fast.pyx
+  requires:
+    - pytest
+    - hypothesis
+    - expecttest
+    - pip
   imports:
     - fairseq
     - fairseq.benchmark
   commands:
+    #- pip check
     - fairseq-eval-lm --help
     - fairseq-generate --help
     - fairseq-interactive --help
@@ -72,6 +84,7 @@ test:
     - fairseq-score --help
     - fairseq-train --help
     - fairseq-validate --help
+    - pytest -vv . --ignore=tests/test_data_utils.py
 
 about:
   home: https://github.com/pytorch/fairseq
