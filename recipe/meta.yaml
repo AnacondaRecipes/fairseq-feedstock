@@ -12,7 +12,7 @@ source:
   sha256: b5bb076f8b0d5b06a897b11627da278816752b2202650c34becd8f4240f86961
 
 build:
-  number: 6
+  number: 0
   entry_points:
     - fairseq-eval-lm = fairseq_cli.eval_lm:cli_main
     - fairseq-generate = fairseq_cli.generate:cli_main
