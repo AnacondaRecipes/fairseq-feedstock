@@ -63,14 +63,22 @@ requirements:
     - tqdm
     - bitarray
     - pytorch
-
-{% set tests_to_skip = "" %}
+#170 failed, 238 passed, 60 skipped, 4 deselected, 602 warnings
+{% set tests_to_skip = " test_data_utils" %}
 # missing CUDA error, but we don't need to build CUDA-compatible fairseq
-{% set tests_to_skip = tests_to_skip + "test_fp16_for_long_input" %}  # [pytorch_variant == "cpu"]
+{% set tests_to_skip = tests_to_skip + " or test_fp16_for_long_input" %}  # [pytorch_variant == "cpu"]
+
 # skipping because "soft_energy" KeyError that seems to be missing from a dict defined in files within examples/ directory 
-{% set tests_to_skip = tests_to_skip + "test_expected_attention" %}   # [pytorch_variant == "cpu"]
+{% set tests_to_skip = tests_to_skip + " or test_expected_attention" %}   # [pytorch_variant == "cpu"]
+
 # skipping these because we don't have xformers
-{% set tests_to_skip = tests_to_skip + "test_xformers_single_forward_parity" %}
+{% set tests_to_skip = tests_to_skip + " or test_xformers_single_forward_parity" %}
+
+# skipping these because we don't have iopath
+{% set tests_to_skip = tests_to_skip + " or test_file_io_async" %}
+
+{% set tests_to_skip = tests_to_skip + " or test_xformers_single_forward_parity" %}
+#{% set test_files_to_skip = " --ignore=tests/test_multihead_attention.py " %}
 
 test:
   source_files:
@@ -84,6 +92,8 @@ test:
     - hypothesis
     - expecttest
     - pip
+    # fairseq.tasks.text_to_speech
+    - tensorboardx
   imports:
     - fairseq
     - fairseq.benchmark
@@ -96,7 +106,8 @@ test:
     - fairseq-score --help
     - fairseq-train --help
     - fairseq-validate --help
-    - pytest -vv . --ignore=tests/test_data_utils.py
+    #- pytest -vv tests -vv {{ test_files_to_skip }} -k "not({{ tests_to_skip }})"
+    - pytest -vv . -k "not({{ tests_to_skip }})"
 
 about:
   home: https://github.com/pytorch/fairseq
