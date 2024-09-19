@@ -69,7 +69,7 @@ requirements:
     - pytorch
     - cffi
     - cython
-    #- torchaudio >=0.8.0
+    - torchaudio >=0.8.0
 
 {% set tests_to_skip = " test_data_utils" %}
 
@@ -89,24 +89,24 @@ requirements:
 # RuntimeError: Mask Type should be defined
 # According to issue, fixed on main, but not in 0.12.2. 
 # https://github.com/facebookresearch/fairseq/issues/4858#issuecomment-1313135905
-{% set tests_to_skip = tests_to_skip + " or test_alignment" %}
-{% set tests_to_skip = tests_to_skip + " or test_alignment_full_context" %}
-{% set tests_to_skip = tests_to_skip + " or test_cmlm_transformer" %}
-{% set tests_to_skip = tests_to_skip + " or test_insertion_transformer" %}
-{% set tests_to_skip = tests_to_skip + " or test_iterative_nonautoregressive_transformer" %}
-{% set tests_to_skip = tests_to_skip + " or test_mixture_of_experts" %}
-{% set tests_to_skip = tests_to_skip + " or test_multilingual_transformer" %}
-{% set tests_to_skip = tests_to_skip + " or test_nonautoregressive_transformer" %}
-{% set tests_to_skip = tests_to_skip + " or test_transformer" %}
-{% set tests_to_skip = tests_to_skip + " or test_transformer_cross_self_attention" %}
-{% set tests_to_skip = tests_to_skip + " or test_transformer_pointer_generator" %}
-{% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch" %}
-{% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_dicts" %}
-{% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_no_vepoch" %}
-{% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_src_tgt_dict_spec" %}
-{% set tests_to_skip = tests_to_skip + " or test_activation_checkpointing_does_not_change_metrics" %}
-{% set tests_to_skip = tests_to_skip + " or test_activation_offloading_does_not_change_metrics" %}
-{% set tests_to_skip = tests_to_skip + " or test_mask_for_xformers" %}
+# {% set tests_to_skip = tests_to_skip + " or test_alignment" %}
+# {% set tests_to_skip = tests_to_skip + " or test_alignment_full_context" %}
+# {% set tests_to_skip = tests_to_skip + " or test_cmlm_transformer" %}
+# {% set tests_to_skip = tests_to_skip + " or test_insertion_transformer" %}
+# {% set tests_to_skip = tests_to_skip + " or test_iterative_nonautoregressive_transformer" %}
+# {% set tests_to_skip = tests_to_skip + " or test_mixture_of_experts" %}
+# {% set tests_to_skip = tests_to_skip + " or test_multilingual_transformer" %}
+# {% set tests_to_skip = tests_to_skip + " or test_nonautoregressive_transformer" %}
+# {% set tests_to_skip = tests_to_skip + " or test_transformer" %}
+# {% set tests_to_skip = tests_to_skip + " or test_transformer_cross_self_attention" %}
+# {% set tests_to_skip = tests_to_skip + " or test_transformer_pointer_generator" %}
+# {% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch" %}
+# {% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_dicts" %}
+# {% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_no_vepoch" %}
+# {% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_src_tgt_dict_spec" %}
+# {% set tests_to_skip = tests_to_skip + " or test_activation_checkpointing_does_not_change_metrics" %}
+# {% set tests_to_skip = tests_to_skip + " or test_activation_offloading_does_not_change_metrics" %}
+# {% set tests_to_skip = tests_to_skip + " or test_mask_for_xformers" %}
 
 #{% set tests_to_skip = tests_to_skip + " or test_roberta_incremental_decoder" %}
 
