@@ -10,6 +10,8 @@ source:
   url: https://github.com/facebookresearch/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
   #sha256: 34f1b18426bf3844714534162f065ab733e049597476daa35fffb4d06a92b524
   sha256: b5bb076f8b0d5b06a897b11627da278816752b2202650c34becd8f4240f86961
+  patches:
+    - patches/0001-remove-upper-bounds.patch
 
 build:
   number: 0
@@ -43,6 +45,8 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - patch     # [not win]
+    - m2-patch  # [win]
   host:
     - pybind11
     - python
@@ -63,8 +67,12 @@ requirements:
     - tqdm
     - bitarray
     - pytorch
-#170 failed, 238 passed, 60 skipped, 4 deselected, 602 warnings
+    - cffi
+    - cython
+    #- torchaudio >=0.8.0
+
 {% set tests_to_skip = " test_data_utils" %}
+
 # missing CUDA error, but we don't need to build CUDA-compatible fairseq
 {% set tests_to_skip = tests_to_skip + " or test_fp16_for_long_input" %}  # [pytorch_variant == "cpu"]
 
@@ -76,9 +84,31 @@ requirements:
 
 # skipping these because we don't have iopath
 {% set tests_to_skip = tests_to_skip + " or test_file_io_async" %}
-
 {% set tests_to_skip = tests_to_skip + " or test_xformers_single_forward_parity" %}
-#{% set test_files_to_skip = " --ignore=tests/test_multihead_attention.py " %}
+
+# RuntimeError: Mask Type should be defined
+# According to issue, fixed on main, but not in 0.12.2. 
+# https://github.com/facebookresearch/fairseq/issues/4858#issuecomment-1313135905
+{% set tests_to_skip = tests_to_skip + " or test_alignment" %}
+{% set tests_to_skip = tests_to_skip + " or test_alignment_full_context" %}
+{% set tests_to_skip = tests_to_skip + " or test_cmlm_transformer" %}
+{% set tests_to_skip = tests_to_skip + " or test_insertion_transformer" %}
+{% set tests_to_skip = tests_to_skip + " or test_iterative_nonautoregressive_transformer" %}
+{% set tests_to_skip = tests_to_skip + " or test_mixture_of_experts" %}
+{% set tests_to_skip = tests_to_skip + " or test_multilingual_transformer" %}
+{% set tests_to_skip = tests_to_skip + " or test_nonautoregressive_transformer" %}
+{% set tests_to_skip = tests_to_skip + " or test_transformer" %}
+{% set tests_to_skip = tests_to_skip + " or test_transformer_cross_self_attention" %}
+{% set tests_to_skip = tests_to_skip + " or test_transformer_pointer_generator" %}
+{% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch" %}
+{% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_dicts" %}
+{% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_no_vepoch" %}
+{% set tests_to_skip = tests_to_skip + " or test_translation_multi_simple_epoch_src_tgt_dict_spec" %}
+{% set tests_to_skip = tests_to_skip + " or test_activation_checkpointing_does_not_change_metrics" %}
+{% set tests_to_skip = tests_to_skip + " or test_activation_offloading_does_not_change_metrics" %}
+{% set tests_to_skip = tests_to_skip + " or test_mask_for_xformers" %}
+
+#{% set tests_to_skip = tests_to_skip + " or test_roberta_incremental_decoder" %}
 
 test:
   source_files:
@@ -86,19 +116,17 @@ test:
     - examples
     - scripts
     - fairseq
-    #- fairseq/data/data_utils_fast.pyx
   requires:
     - pytest
     - hypothesis
     - expecttest
     - pip
-    # fairseq.tasks.text_to_speech
     - tensorboardx
   imports:
     - fairseq
     - fairseq.benchmark
   commands:
-    #- pip check
+    - pip check
     - fairseq-eval-lm --help
     - fairseq-generate --help
     - fairseq-interactive --help
@@ -106,7 +134,6 @@ test:
     - fairseq-score --help
     - fairseq-train --help
     - fairseq-validate --help
-    #- pytest -vv tests -vv {{ test_files_to_skip }} -k "not({{ tests_to_skip }})"
     - pytest -vv . -k "not({{ tests_to_skip }})"
 
 about:
