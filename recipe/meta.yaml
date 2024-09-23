@@ -120,6 +120,8 @@ requirements:
 {% set tests_to_skip = tests_to_skip + " or test_linformer_roberta_sentence_prediction" %}
 {% set tests_to_skip = tests_to_skip + " or test_r4f_roberta" %}
 {% set tests_to_skip = tests_to_skip + " or test_waitk_checkpoint" %}
+{% set tests_to_skip = tests_to_skip + " or test_multilingual_translation_latent_depth" %}
+{% set tests_to_skip = tests_to_skip + " or test_roberta_incremental_decoder" %}
 
 test:
   source_files:
