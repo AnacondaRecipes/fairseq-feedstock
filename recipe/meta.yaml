@@ -70,8 +70,6 @@ requirements:
     - cffi
     - cython
     - torchaudio >=0.8.0
-  run_constrained:
-    - blas=*=openblas
 
 {% set tests_to_skip = "" %}
 
@@ -111,7 +109,7 @@ requirements:
 {% set tests_to_skip = tests_to_skip + " or test_activation_offloading_does_not_change_metrics" %}
 {% set tests_to_skip = tests_to_skip + " or test_mask_for_xformers" %}
 
-
+# requires examples, but skipping examples import due to segmentation fault from the size of examples
 {% set tests_to_skip = tests_to_skip + " or test_laser_lstm" %}
 {% set tests_to_skip = tests_to_skip + " or test_laser_transformer" %}
 {% set tests_to_skip = tests_to_skip + " or test_linformer_roberta_masked_lm" %}
@@ -126,7 +124,6 @@ requirements:
 test:
   source_files:
     - tests
-    #- examples
     - scripts
     - fairseq
   requires:
@@ -147,8 +144,6 @@ test:
     - fairseq-score --help
     - fairseq-train --help
     - fairseq-validate --help
-    #- pytest -vv . {{ test_files_to_skip }} -k "not({{ tests_to_skip }})"
-    #- pytest -vv . {{ test_files_to_skip }}
     - pytest -vv .  --ignore=tests/speech_recognition/test_collaters.py --ignore=tests/speech_recognition/test_cross_entropy.py --ignore=tests/speech_recognition/test_data_utils.py --ignore=tests/speech_recognition/test_vggtransformer.py -k "not({{ tests_to_skip }})"
 
 about:
