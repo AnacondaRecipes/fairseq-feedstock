@@ -9,6 +9,7 @@ source:
   url: https://github.com/facebookresearch/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
   sha256: b5bb076f8b0d5b06a897b11627da278816752b2202650c34becd8f4240f86961
   patches:
+      # following conda-forge pinnings.
     - patches/0001-remove-upper-bounds.patch
 
 build:
