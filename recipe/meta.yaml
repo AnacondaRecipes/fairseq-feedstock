@@ -6,9 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  #url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   url: https://github.com/facebookresearch/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
-  #sha256: 34f1b18426bf3844714534162f065ab733e049597476daa35fffb4d06a92b524
   sha256: b5bb076f8b0d5b06a897b11627da278816752b2202650c34becd8f4240f86961
   patches:
     - patches/0001-remove-upper-bounds.patch
@@ -28,7 +26,6 @@ build:
     # compiling Cython token_block_utils_fast.pyx module so it can be imported
     - {{ PYTHON }} setup.py build_ext --inplace
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-    # - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --global-option="build_ext" --global-option="--inplace"
   missing_dso_whitelist:
     - $RPATH/libtorch_cpu.so         # [linux]
     - $RPATH/libtorch_cpu.dylib      # [osx]
@@ -55,7 +52,7 @@ requirements:
     - cython
     - setuptools
     - wheel
-    # It's required to build the CPP extensions.
+    # It's required to build the CPP extensions.q
     - pytorch
   run:
     - python
@@ -75,10 +72,10 @@ requirements:
 
 {% set tests_to_skip = " test_data_utils" %}
 # # missing CUDA error, but we don't need to build CUDA-compatible fairseq
-{% set tests_to_skip = tests_to_skip + " or test_fp16_for_long_input" %}  # [pytorch_variant == "cpu"]
+{% set tests_to_skip = tests_to_skip + " or test_fp16_for_long_input" %}
 
 # # skipping because "soft_energy" KeyError that seems to be missing from a dict defined in files within examples/ directory 
-{% set tests_to_skip = tests_to_skip + " or test_expected_attention" %}   # [pytorch_variant == "cpu"]
+{% set tests_to_skip = tests_to_skip + " or test_expected_attention" %}
 
 # # skipping these because we don't have xformers
 {% set tests_to_skip = tests_to_skip + " or test_xformers_single_forward_parity" %}
@@ -124,8 +121,7 @@ requirements:
 test:
   source_files:
     - tests
-    - scripts
-    - fairseq
+    - scripts/average_checkpoints.py
   requires:
     - pytest
     - hypothesis
@@ -144,10 +140,11 @@ test:
     - fairseq-score --help
     - fairseq-train --help
     - fairseq-validate --help
+    # all ignored tests are using examples, which causes segmentation when imported
     - pytest -vv .  --ignore=tests/speech_recognition/test_collaters.py --ignore=tests/speech_recognition/test_cross_entropy.py --ignore=tests/speech_recognition/test_data_utils.py --ignore=tests/speech_recognition/test_vggtransformer.py -k "not({{ tests_to_skip }})"
 
 about:
-  home: https://github.com/pytorch/fairseq
+  home: https://github.com/facebookresearch/fairseq
   summary: Facebook AI Research Sequence-to-Sequence Toolkit
   description: |
     Fairseq(-py) is a sequence modeling toolkit that allows researchers and 
@@ -157,7 +154,7 @@ about:
   license_file: LICENSE
   license_family: MIT
   dev_url: https://github.com/facebookresearch/fairseq
-  doc_url: https://fairseq.readthedocs.io/en/latest/
+  doc_url: https://fairseq.readthedocs.io/
 
 extra:
   recipe-maintainers:
