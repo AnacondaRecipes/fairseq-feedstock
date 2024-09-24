@@ -25,6 +25,7 @@ build:
     - fairseq-validate = fairseq_cli.validate:cli_main
   script:
     # compiling Cython token_block_utils_fast.pyx module so it can be imported
+    # https://github.com/facebookresearch/fairseq/blob/v0.12.2/.github/workflows/build.yml#L37
     - {{ PYTHON }} setup.py build_ext --inplace
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   missing_dso_whitelist:
